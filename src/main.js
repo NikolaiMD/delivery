@@ -1,9 +1,10 @@
-import { createApp } from 'vue'
+import {createApp} from 'vue'
+import {createPinia} from "pinia";
 import './style.css'
 
 import App from './App.vue'
 import router from './router'
-
+const pinia = createPinia()
 const app = createApp(App)
 import Header from './components/partials/Header.vue'
 import Footer from './components/partials/Footer.vue'
@@ -20,6 +21,7 @@ import PalkiSkalki from "./views/restaurants/palki-skalki.vue";
 import PizzaBurger from "./views/restaurants/pizza-burger.vue";
 import PizzaPlus from "./views/restaurants/pizza-plus.vue";
 import Tanuki from "./views/restaurants/tanuki.vue";
+import {useCartStore} from "./stores/cart.js";
 
 app.component('Header', Header)
 app.component('Footer', Footer)
@@ -36,5 +38,7 @@ app.component('PalkiSkalki', PalkiSkalki)
 app.component('PizzaBurger', PizzaBurger)
 app.component('PizzaPlus', PizzaPlus)
 app.component('Tanuki', Tanuki)
+app.use(pinia)
 app.use(router)
+// app.config.globalProperties.mainStore = useCartStore()
 app.mount('#app')

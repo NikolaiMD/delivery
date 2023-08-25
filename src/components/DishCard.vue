@@ -11,7 +11,9 @@
           </div>
         </div>
         <div class="card-buttons">
-          <button class="button button-primary button-add-cart">
+          <button
+              v-on:click="cart.increaseCount(dish.id); cart.addToCart({name: dish.name, price: dish.price, id: dish.id, qty: dish.qty})"
+              class="button button-primary button-add-cart">
             <span class="button-card-text">В корзину</span>
             <span class="button-cart-svg"></span>
           </button>
@@ -23,8 +25,10 @@
 </template>
 
 <script setup>
+import {useCartStore} from "../stores/cart.js";
 import dishCardData from '../composables/dishCardData.js'
 
+const cart = useCartStore()
 const {
   dishes
 } = dishCardData()

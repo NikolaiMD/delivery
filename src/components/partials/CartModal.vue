@@ -7,52 +7,27 @@
       </div>
       <!-- /.modal-header -->
       <div class="modal-body">
-        <div class="food-row">
-          <span class="food-name">Ролл угорь стандарт</span>
-          <strong class="food-price">250 ₽</strong>
-          <div class="food-counter">
-            <button class="counter-button">-</button>
-            <span class="counter">1</span>
-            <button class="counter-button">+</button>
+        <div v-for="(item, index) in items.items" :key="item.id">
+          <div v-if="item.id === Object.keys(items.counters)[index] && Object.values(items.counters)[index] > 0"
+               class="food-row">
+            <span class="food-name">{{ item.name }}</span>
+            <strong class="food-price">{{ item.price * items.getCounterValue(item.id) }}</strong>
+            <div class="food-counter">
+              <button v-on:click="items.decreaseCount(item.id)" class="counter-button">-</button>
+              <span class="counter">{{ items.getCounterValue(item.id) }}</span>
+              <button v-on:click="items.increaseCount(item.id)" class="counter-button">+</button>
+            </div>
           </div>
         </div>
-        <!-- /.foods-row -->
-        <div class="food-row">
-          <span class="food-name">Ролл угорь стандарт</span>
-          <strong class="food-price">250 ₽</strong>
-          <div class="food-counter">
-            <button class="counter-button">-</button>
-            <span class="counter">1</span>
-            <button class="counter-button">+</button>
-          </div>
+        <div v-if="!items.items.length">
+          <span>Ваша корзина пуста!</span>
         </div>
-        <!-- /.foods-row -->
-        <div class="food-row">
-          <span class="food-name">Ролл угорь стандарт</span>
-          <strong class="food-price">250 ₽</strong>
-          <div class="food-counter">
-            <button class="counter-button">-</button>
-            <span class="counter">1</span>
-            <button class="counter-button">+</button>
-          </div>
-        </div>
-        <!-- /.foods-row -->
-        <div class="food-row">
-          <span class="food-name">Ролл угорь стандарт</span>
-          <strong class="food-price">250 ₽</strong>
-          <div class="food-counter">
-            <button class="counter-button">-</button>
-            <span class="counter">1</span>
-            <button class="counter-button">+</button>
-          </div>
-        </div>
-        <!-- /.foods-row -->
       </div>
       <!-- /.modal-body -->
       <div class="modal-footer">
-        <span class="modal-pricetag">1250 ₽</span>
+        <span class="modal-pricetag">{{ items.cartPrice }} ₽</span>
         <div class="footer-buttons">
-          <button class="button button-primary">Оформить заказ</button>
+          <button v-if="items.counter>0" class="button button-primary">Оформить заказ</button>
           <button v-on:click="hide" class="button clear-cart">Отмена</button>
         </div>
       </div>
@@ -63,6 +38,9 @@
 </template>
 
 <script setup>
+import {useCartStore} from "../../stores/cart.js";
+
+const items = useCartStore()
 let props = defineProps({
   show: Boolean
 })
